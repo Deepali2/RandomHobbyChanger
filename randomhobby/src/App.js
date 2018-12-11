@@ -1,5 +1,21 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './App.css';
+
+class InstructorItem extends Component {
+  static propTypes = {
+    name: PropTypes.string,
+    hobbies: PropTypes.arrayOf(PropTypes.string)
+  }
+  render() {
+    return (
+      <li>
+        <h3>{this.props.name}</h3>
+        <h4>Hobbies: {this.props.hobbies.join(', ')}</h4>
+      </li>
+    );
+  }
+}
 
 class App extends Component {
   constructor(props) {
@@ -49,36 +65,16 @@ class App extends Component {
         return inst;
       });
       this.setState({instructors});
-      /*
-      //Another Way
-      const instructors = this.state.instructors.map((inst, index) => (
-        index === instructorIndex? {
-          ...inst, 
-          hobbies:[...inst.hobbies.slice(0, hobbyIndex).concat(inst.hobbies.slice(hobbyIndex + 1, inst.hobbies.length))]
-        } : inst
-      ));
-      this.setState({instructors});
-      */
-      /*
-      //Another Way
-      //make a copy of the instructor object that needs to be modified
-      newInstructors[instructorIndex] = Object.assign({}, newInstructors[instructorIndex]);
-      //make a copy of the hobbies array that needs to be modified
-      newInstructors[instructorIndex].hobbies = newInstructors[instructorIndex].hobbies.slice();
-      //maske the change
-      newInstructors[instructorIndex].hobbies.splice(hobbyIndex, 1);
-
-      //set the state
-      this.setState({instructors: newInstructors});
-      */
+      
     }, 1000);
   }
   render() {
     const instructors = this.state.instructors.map((instructor, index) => (
-      <li key={index}>
-        <h3>{instructor.name}</h3>
-        <h4>Hobbies: {instructor.hobbies.join(', ')}</h4>
-      </li>
+      <InstructorItem 
+         key={index}
+         name={instructor.name}
+         hobbies={instructor.hobbies}
+      />
     ));
     return (
       <div className="App">
